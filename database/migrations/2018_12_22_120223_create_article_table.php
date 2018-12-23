@@ -17,6 +17,7 @@ class CreateArticleTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('preview');
+            $table->string('text');
             $table->string('titleImage')->default('NULL')->nullable();
             $table->string('author');
             $table->string('tags')->default('NULL')->nullable();

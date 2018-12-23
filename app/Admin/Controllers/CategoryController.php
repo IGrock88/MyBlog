@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -22,9 +23,10 @@ class CategoryController extends Controller
      */
     public function index(Content $content)
     {
+
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Категории')
+            ->description('Страница со всеми категориями')
             ->body($this->grid());
     }
 
@@ -72,6 +74,16 @@ class CategoryController extends Controller
             ->body($this->form());
     }
 
+    public function delete($id)
+    {
+        $category = Category::find($id);
+        if ($category->delete()){
+            admin_toastr('Категория успешно удалена');
+            return redirect('/admin/categories');
+        }
+
+    }
+
     /**
      * Make a grid builder.
      *
@@ -82,8 +94,17 @@ class CategoryController extends Controller
         $grid = new Grid(new Category);
 
         $grid->id('ID');
+        $grid->name('Название категории');
+        $grid->parentId('ID родителя');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
+
+        $grid->actions(function ($actions){
+            $actions->disableDelete();
+
+            $actions->append('<a onclick="return confirm(\'Вы уверены что хотите удалить запись\')" href="/admin/categories/' .
+                $actions->getKey() . '/delete"><i class="fa fa-trash"></i></a>');
+        });
 
         return $grid;
     }
@@ -112,9 +133,10 @@ class CategoryController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Category);
+        $form = new Form(new Category());
 
         $form->display('ID');
+        $form->text('name', 'Название категории');
         $form->display('Created at');
         $form->display('Updated at');
 
