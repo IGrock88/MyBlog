@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Routing\Router;
 
 Admin::registerAuthRoutes();
@@ -13,23 +14,10 @@ Route::group([
     $router->get('/', 'HomeController@index');
 
 
-    $router->group(['prefix' => '/articles'], function(Router $router){
-        $router->get('/', 'ArticleController@index');
-        $router->match(['post','get', 'put'],'/{id}', 'ArticleController@show');
-        $router->get('/create', 'ArticleController@create');
-        $router->match(['post','get', 'put'],'/{id}/edit', 'ArticleController@edit');
-        $router->get('/{id}/delete', 'ArticleController@delete');
-    });
-
-    $router->group(['prefix' => 'categories'], function(Router $router){
-        $router->get('/', 'CategoryController@index');
-        $router->match(['post','get', 'put'],'/{id}', 'CategoryController@show');
-        $router->match(['post','get', 'put'],'/{id}/edit', 'CategoryController@edit');
-        $router->get('/{id}/delete', 'CategoryController@delete');
-    });
-
-
-
+    $router->resources([
+        'article' => ArticleController::class,
+        'category' => CategoryController::class
+    ]);
 
 
 
