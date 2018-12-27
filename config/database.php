@@ -1,10 +1,4 @@
 <?php
-$url = parse_url(getenv("mysql://b35f0b0e98ab47:6908879e@eu-cdbr-west-02.cleardb.net/heroku_007f879f0960351?reconnect=true"));
-
-$host = $url["host"];
-$username = $url["user"];
-$password = $url["pass"];
-$database = substr($url["path"], 1);
 
 return [
 
@@ -37,7 +31,6 @@ return [
     |
     */
 
-
     'connections' => [
 
         'sqlite' => [
@@ -48,11 +41,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', $host),
+            'host' => env('DB_HOST', 'eu-cdbr-west-02.cleardb.net'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', $database),
-            'username' => env('DB_USERNAME', $username),
-            'password' => env('DB_PASSWORD', $password),
+            'database' => env('DB_DATABASE', 'heroku_007f879f0960351'),
+            'username' => env('DB_USERNAME', 'b35f0b0e98ab47'),
+            'password' => env('DB_PASSWORD', '6908879e'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
