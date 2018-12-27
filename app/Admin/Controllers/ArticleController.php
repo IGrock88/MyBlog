@@ -5,11 +5,14 @@ namespace App\Admin\Controllers;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\User;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -87,7 +90,14 @@ class ArticleController extends Controller
         $grid->preview('Preview');
         $grid->text('Text');
         $grid->titleImage('TitleImage');
-        $grid->author('Author');
+        $grid->author('Author')->display(function ($author){
+
+            $authorId = $author['id'];
+            $authorName = $author['name'];
+
+            $html = "<a href='/admin/auth/users/$authorId'>$authorName</a>";
+            return $html;
+        });
         $grid->tags('Tags');
         $grid->route('Route');
         $grid->categoryId()->display(function ($categoryId) {
@@ -144,8 +154,11 @@ class ArticleController extends Controller
         $form->textarea('preview', 'Превью');
         $form->summernote('text');
         $form->image('titleImage', 'Картинка на превью');
-        $form->display('author', 'Author');
+
+        $form->display('author.name', 'Author');
+        $form->textarea('description')->default('NULL');
         $form->tags('tags', 'Tags')->default('NULL');
+        $form->tags('keywords', 'Keywords')->default('NULL');
         $form->text('route', 'Route')->default('NULL');
         $form->text('categoryId', 'Категория');
 
