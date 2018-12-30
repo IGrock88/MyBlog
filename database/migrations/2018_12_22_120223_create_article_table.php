@@ -19,12 +19,17 @@ class CreateArticleTable extends Migration
             $table->string('preview');
             $table->string('text');
             $table->string('titleImage')->default('NULL')->nullable();
-            $table->string('author');
+            $table->integer('authorId');
             $table->string('tags')->default('NULL')->nullable();
-            $table->string('route')->default('NULL')->nullable();
             $table->integer('categoryId')->default(0)->nullable();
+            $table->string('keywords', 255)->nullable();
+            $table->string('description', 255)->nullable();
+            $table->integer('views')->default(0);
+            $table->enum('isShowOnMainHeader', ['0', '1'])->default('0');
+            $table->string('slug')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['title']);
         });
     }
 

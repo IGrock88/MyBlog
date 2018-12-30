@@ -131,7 +131,7 @@ class ArticleController extends Controller
         $show->titleImage('TitleImage');
         $show->author('Author');
         $show->tags('Tags');
-        $show->route('Route');
+        $show->slug('slug');
         $show->categoryId('CategoryId');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
@@ -159,7 +159,6 @@ class ArticleController extends Controller
         $form->textarea('description')->default('NULL');
         $form->tags('tags', 'Tags')->default('NULL');
         $form->tags('keywords', 'Keywords')->default('NULL');
-        $form->text('route', 'Route')->default('NULL');
         $form->text('categoryId', 'Категория');
 
         return $form;

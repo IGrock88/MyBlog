@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+
+    use Sluggable;
     protected $table = 'article';
 
     protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author'];
@@ -28,5 +31,20 @@ class Article extends Model
         self::creating(function ($article){
             $article->authorId = Admin::user()->id;
         });
+    }
+
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }
