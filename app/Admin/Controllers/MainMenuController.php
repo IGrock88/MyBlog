@@ -2,19 +2,15 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Article;
+use App\Models\MainMenu;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\User;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Illuminate\Support\Facades\Auth;
 
-class ArticleController extends Controller
+class MainMenuController extends Controller
 {
     use HasResourceActions;
 
@@ -83,33 +79,14 @@ class ArticleController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Article);
+        $grid = new Grid(new MainMenu);
 
         $grid->id('Id');
-        $grid->title('Title');
-        $grid->preview('Preview');
-
-        $grid->picture()->gallery();
-        $grid->titleImage('TitleImage');
-        $grid->author('Author')->display(function ($author){
-
-            $authorId = $author['id'];
-            $authorName = $author['name'];
-
-            $html = "<a href='/admin/auth/users/$authorId'>$authorName</a>";
-            return $html;
-        });
-        $grid->tags('Tags');
-        $grid->categoryId()->display(function ($categoryId) {
-            if (!$categoryId){
-                return 'Нет категории';
-            }
-            $html = "<a href='/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
-            return $html;
-        });
+        $grid->name('Name');
+        $grid->route('Route');
+        $grid->parentId('ParentId');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
-        $grid->deleted_at('Deleted at');
 
         return $grid;
     }
@@ -122,20 +99,14 @@ class ArticleController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Article::findOrFail($id));
+        $show = new Show(MainMenu::findOrFail($id));
 
         $show->id('Id');
-        $show->title('Title');
-        $show->preview('Preview');
-        $show->text('Text');
-        $show->titleImage('TitleImage');
-        $show->author('Author');
-        $show->tags('Tags');
-        $show->slug('slug');
-        $show->categoryId('CategoryId');
+        $show->name('Name');
+        $show->route('Route');
+        $show->parentId('ParentId');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
-        $show->deleted_at('Deleted at');
 
         return $show;
     }
@@ -147,20 +118,12 @@ class ArticleController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Article());
+        $form = new Form(new MainMenu);
 
-        $form->id('id');
-        $form->text('title', 'Название (также будет добавлено)');
-        $form->textarea('preview', 'Превью');
-        $form->summernote('text');
-        $form->image('titleImage', 'Картинка на превью');
+        $form->text('name', 'Name');
+        $form->text('route', 'Route');
+        $form->text('parentId', 'ParentId');
 
-
-        $form->textarea('description')->default('NULL');
-        $form->tags('tags', 'Tags')->default('NULL');
-        $form->tags('keywords', 'Keywords')->default('NULL');
-        $form->text('categoryId', 'Категория');
-        $form->display('author.name', 'Author');
         return $form;
     }
 }
