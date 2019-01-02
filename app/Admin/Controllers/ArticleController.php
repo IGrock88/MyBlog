@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\User;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -27,7 +28,7 @@ class ArticleController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
+            ->header('Список статей')
             ->description('description')
             ->body($this->grid());
     }
@@ -104,7 +105,7 @@ class ArticleController extends Controller
             if (!$categoryId){
                 return 'Нет категории';
             }
-            $html = "<a href='/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
+            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
             return $html;
         });
         $grid->created_at('Created at');
@@ -156,10 +157,14 @@ class ArticleController extends Controller
         $form->image('titleImage', 'Картинка на превью');
 
 
-        $form->textarea('description')->default('NULL');
-        $form->tags('tags', 'Tags')->default('NULL');
-        $form->tags('keywords', 'Keywords')->default('NULL');
-        $form->text('categoryId', 'Категория');
+        $form->textarea('description');
+        $form->tags('tags', 'Tags');
+        $form->tags('keywords', 'Keywords');
+
+
+        $categories = (new CategoryService())->getAllCategoriesNameKeysIndex();
+
+        $form->select('categoryId', 'Категория')->options($categories);
         $form->display('author.name', 'Author');
         return $form;
     }

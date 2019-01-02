@@ -4,11 +4,14 @@ namespace App\Admin\Controllers;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Services\CategoryService;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
@@ -23,8 +26,8 @@ class CategoryController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Список категорий')
+            ->description('Страница со списком существующих категорий')
             ->body($this->grid());
     }
 
@@ -38,8 +41,8 @@ class CategoryController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Категория')
+            ->description('Страница описания категории')
             ->body($this->detail($id));
     }
 
@@ -53,9 +56,9 @@ class CategoryController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
-            ->body($this->form()->edit($id));
+            ->header('Редактировать категорию')
+            ->description('Страница для реадактирования категории')
+            ->body($this->form($id)->edit($id));
     }
 
     /**
@@ -67,8 +70,8 @@ class CategoryController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Создание категории')
+            ->description('Страница для создания новой категории')
             ->body($this->form());
     }
 
@@ -82,11 +85,20 @@ class CategoryController extends Controller
         $grid = new Grid(new Category);
 
         $grid->id('Id');
-        $grid->name('Name');
-        $grid->parentId('ParentId');
-        $grid->route('Route');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+
+        $grid->name('Имя');
+
+        $grid->parentId('Родительская категория')->display(function ($categoryId) {
+            if (!$categoryId){
+                return 'Нет категории';
+            }
+            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
+            return $html;
+        });
+
+        $grid->slug('Slug');
+        $grid->created_at('Создана');
+        $grid->updated_at('Редактировалась');
 
         return $grid;
     }
@@ -102,11 +114,21 @@ class CategoryController extends Controller
         $show = new Show(Category::findOrFail($id));
 
         $show->id('Id');
-        $show->name('Name');
-        $show->parentId('ParentId');
-        $show->route('Route');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+
+        $show->name('Имя');
+
+
+        $show->parentId('Родетельская категория')->display(function ($categoryId) {
+            if (!$categoryId){
+                return 'Нет категории';
+            }
+            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
+            return $html;
+        });
+
+        $show->slug('Slug');
+        $show->created_at('Создана');
+        $show->updated_at('Редактировалась');
 
         return $show;
     }
@@ -114,15 +136,22 @@ class CategoryController extends Controller
     /**
      * Make a form builder.
      *
+     * @param null|int $idCategory
      * @return Form
      */
-    protected function form()
+    protected function form($idCategory = null)
     {
         $form = new Form(new Category);
 
-        $form->text('name', 'Name');
-        $form->number('parentId', 'ParentId');
-        $form->text('route', 'Route')->default('NULL');
+        $form->text('name', 'Имя');
+
+        if ($idCategory == null){
+            $categories = (new CategoryService())->getAllCategoriesNameKeysIndex();
+        }
+        else {
+            $categories = (new CategoryService())->getCategoryNamesKeysIndexWithoutId($idCategory);
+        }
+        $form->select('parentId', 'Родительская категория')->options($categories);
 
         return $form;
     }

@@ -1721,7 +1721,6 @@ button::-moz-focus-inner, input::-moz-focus-inner {
  *
  * ------------------------------------------------------------------- */
 .s-pageheader {
-   min-height: 174px;
    background-image: url(../images/background.png);
    /* background-repeat: no-repeat; */
    /* background-position: center center; */
@@ -1747,10 +1746,9 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .header {
-   position: absolute;
    text-align: center;
-   top: 30px;
    width: 100%;
+   padding-top: 30px;
 }
 
 .header__content {
@@ -1762,6 +1760,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    overflow: hidden;
    padding: 0 75px;
    max-width: 1350px;
+   margin-top: 60px;
 }
 
 
@@ -1777,6 +1776,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 .header__logo a {
    display: block;
+   font-family: "metropolis-medium", sans-serif;
+   font-size: 32px;
    margin: 0 0 0 6px;
    padding: 0;
    outline: 0;
@@ -2154,7 +2155,7 @@ body.search-is-visible {
 
 .header__nav {
    list-style: none;
-   margin: 0;
+   margin: 0 0 20px 0;
    padding: 0;
    font-family: "metropolis-medium", sans-serif;
    font-size: 15px;
