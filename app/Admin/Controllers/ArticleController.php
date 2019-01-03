@@ -90,7 +90,6 @@ class ArticleController extends Controller
         $grid->title('Title');
         $grid->preview('Preview');
 
-        $grid->picture()->gallery();
         $grid->titleImage('TitleImage');
         $grid->author('Author')->display(function ($author){
 

@@ -15,9 +15,11 @@ class CreateMainMenuTable extends Migration
     {
         Schema::create('main_menu', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', '100');
-            $table->string('route', 255);
-            $table->integer('parentId')->nullable();;
+            $table->string('name', 255)->nullable();
+            $table->string('route', 255)->nullable();
+            $table->integer('parentId')->default(0);
+            $table->enum('status', ['0', '1'])->default('0');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

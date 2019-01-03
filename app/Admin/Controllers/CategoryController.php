@@ -4,18 +4,30 @@ namespace App\Admin\Controllers;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Services\CategoryService;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Illuminate\Http\Request;
 
 
 class CategoryController extends Controller
 {
     use HasResourceActions;
+
+//    /**
+//     * Index interface.
+//     *
+//     * @param Content $content
+//     * @return Content
+//     */
+//    public function index(Content $content)
+//    {
+//        return $content
+//            ->header('Список категорий')
+//            ->description('Страница со списком существующих категорий')
+//            ->body($this->grid());
+//    }
 
     /**
      * Index interface.
@@ -25,10 +37,18 @@ class CategoryController extends Controller
      */
     public function index(Content $content)
     {
+
+        $categoryTree = Category::tree(function ($tree){
+            $tree->branch(function ($category){
+                return "{$category['id']} - {$category['name']} | Slug: /{$category['slug']} | " . Category::$statuses[$category['status']];
+            });
+        });
+
+
         return $content
             ->header('Список категорий')
             ->description('Страница со списком существующих категорий')
-            ->body($this->grid());
+            ->body($categoryTree);
     }
 
     /**
@@ -58,7 +78,7 @@ class CategoryController extends Controller
         return $content
             ->header('Редактировать категорию')
             ->description('Страница для реадактирования категории')
-            ->body($this->form($id)->edit($id));
+            ->body($this->form()->edit($id));
     }
 
     /**
@@ -88,14 +108,13 @@ class CategoryController extends Controller
 
         $grid->name('Имя');
 
-        $grid->parentId('Родительская категория')->display(function ($categoryId) {
-            if (!$categoryId){
-                return 'Нет категории';
-            }
-            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
-            return $html;
+        $grid->filter(function ($filter){
+            $filter->equal('status')->select(Category::$statuses);
         });
 
+        $grid->status('Статус')->display(function ($status){
+            return Category::$statuses[$status];
+        })->sortable();
         $grid->slug('Slug');
         $grid->created_at('Создана');
         $grid->updated_at('Редактировалась');
@@ -117,14 +136,7 @@ class CategoryController extends Controller
 
         $show->name('Имя');
 
-
-        $show->parentId('Родетельская категория')->display(function ($categoryId) {
-            if (!$categoryId){
-                return 'Нет категории';
-            }
-            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
-            return $html;
-        });
+        $show->status('Статус');
 
         $show->slug('Slug');
         $show->created_at('Создана');
@@ -136,22 +148,19 @@ class CategoryController extends Controller
     /**
      * Make a form builder.
      *
-     * @param null|int $idCategory
      * @return Form
      */
-    protected function form($idCategory = null)
+    protected function form()
     {
         $form = new Form(new Category);
 
         $form->text('name', 'Имя');
 
-        if ($idCategory == null){
-            $categories = (new CategoryService())->getAllCategoriesNameKeysIndex();
-        }
-        else {
-            $categories = (new CategoryService())->getCategoryNamesKeysIndexWithoutId($idCategory);
-        }
-        $form->select('parentId', 'Родительская категория')->options($categories);
+        $form->switch('status', 'Статус')->states([
+            'on'  => ['value' => '1', 'text' => 'Публиковать', 'color' => 'success'],
+            'off' => ['value' => '0', 'text' => 'Не публиковать', 'color' => 'danger'],
+        ]);
+
 
         return $form;
     }

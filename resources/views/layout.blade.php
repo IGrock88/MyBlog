@@ -30,8 +30,14 @@
 
     <!-- favicons
     ================================================== -->
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="{{asset('images/favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{asset('images/favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
 </head>
 
@@ -83,42 +89,7 @@
             </div>  <!-- end header__search -->
 
 
-            <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
-
-            <nav class="header__nav-wrap">
-
-                <h2 class="header__nav-heading h6">Site Navigation</h2>
-
-                <ul class="header__nav">
-                    <li class="current"><a href="index.html" title="">Home</a></li>
-                    <li class="has-children">
-                        <a href="#0" title="">Categories</a>
-                        <ul class="sub-menu">
-                            <li><a href="category.html">Lifestyle</a></li>
-                            <li><a href="category.html">Health</a></li>
-                            <li><a href="category.html">Family</a></li>
-                            <li><a href="category.html">Management</a></li>
-                            <li><a href="category.html">Travel</a></li>
-                            <li><a href="category.html">Work</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-children">
-                        <a href="#0" title="">Blog</a>
-                        <ul class="sub-menu">
-                            <li><a href="single-video.html">Video Post</a></li>
-                            <li><a href="single-audio.html">Audio Post</a></li>
-                            <li><a href="single-gallery.html">Gallery Post</a></li>
-                            <li><a href="single-standard.html">Standard Post</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="style-guide.html" title="">Styles</a></li>
-                    <li><a href="about.html" title="">About</a></li>
-                    <li><a href="contact.html" title="">Contact</a></li>
-                </ul> <!-- end header__nav -->
-
-                <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>
-
-            </nav> <!-- end header__nav-wrap -->
+            @widget('mainMenu')
 
         </div> <!-- header-content -->
     </header> <!-- header -->
@@ -203,6 +174,9 @@
     </div> <!-- end pageheader-content row -->
 
 </section> <!-- end s-pageheader -->
+
+@yield('content')
+
 
 <!-- s-footer
 ================================================== -->

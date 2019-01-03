@@ -3,15 +3,36 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Encore\Admin\Traits\AdminBuilder;
+use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use Sluggable;
+    use Sluggable, ModelTree, AdminBuilder;
+
 
     protected $table = 'category';
 
-    protected $fillable = ['name', 'parentId', 'route'];
+    protected $fillable = ['name', 'route'];
+
+
+    const PUBLIC = '1';
+    const NOT_PUBLIC = '0';
+
+    public static $statuses = [
+        self::PUBLIC => 'Опубликована',
+        self::NOT_PUBLIC => 'Не опубликована'
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setParentColumn('parentId');
+        $this->setOrderColumn('order');
+        $this->setTitleColumn('name');
+    }
 
     public function article()
     {
@@ -32,4 +53,5 @@ class Category extends Model
             ]
         ];
     }
+
 }

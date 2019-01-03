@@ -14,6 +14,20 @@ class MainMenuController extends Controller
 {
     use HasResourceActions;
 
+//    /**
+//     * Index interface.
+//     *
+//     * @param Content $content
+//     * @return Content
+//     */
+//    public function index(Content $content)
+//    {
+//        return $content
+//            ->header('Index')
+//            ->description('description')
+//            ->body($this->grid());
+//    }
+
     /**
      * Index interface.
      *
@@ -22,10 +36,18 @@ class MainMenuController extends Controller
      */
     public function index(Content $content)
     {
+
+        $menuTree = MainMenu::tree(function ($tree){
+            $tree->branch(function ($menuItem){
+                return "{$menuItem['id']} - {$menuItem['name']} | {$menuItem['route']} | " . MainMenu::$statuses[$menuItem['status']];
+            });
+        });
+
+
         return $content
-            ->header('Index')
-            ->description('description')
-            ->body($this->grid());
+            ->header('Список категорий')
+            ->description('Страница со списком существующих категорий')
+            ->body($menuTree);
     }
 
     /**
@@ -122,7 +144,10 @@ class MainMenuController extends Controller
 
         $form->text('name', 'Name');
         $form->text('route', 'Route');
-        $form->text('parentId', 'ParentId');
+        $form->switch('status', 'Статус')->states([
+            'on'  => ['value' => '1', 'text' => 'Публиковать', 'color' => 'success'],
+            'off' => ['value' => '0', 'text' => 'Не публиковать', 'color' => 'danger'],
+        ]);
 
         return $form;
     }
