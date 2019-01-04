@@ -10,9 +10,24 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
+
 class CategoryController extends Controller
 {
     use HasResourceActions;
+
+//    /**
+//     * Index interface.
+//     *
+//     * @param Content $content
+//     * @return Content
+//     */
+//    public function index(Content $content)
+//    {
+//        return $content
+//            ->header('Список категорий')
+//            ->description('Страница со списком существующих категорий')
+//            ->body($this->grid());
+//    }
 
     /**
      * Index interface.
@@ -22,10 +37,18 @@ class CategoryController extends Controller
      */
     public function index(Content $content)
     {
+
+        $categoryTree = Category::tree(function ($tree){
+            $tree->branch(function ($category){
+                return "{$category['id']} - {$category['name']} | Slug: /{$category['slug']} | " . Category::$statuses[$category['status']];
+            });
+        });
+
+
         return $content
-            ->header('Index')
-            ->description('description')
-            ->body($this->grid());
+            ->header('Список категорий')
+            ->description('Страница со списком существующих категорий')
+            ->body($categoryTree);
     }
 
     /**
@@ -38,8 +61,8 @@ class CategoryController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Категория')
+            ->description('Страница описания категории')
             ->body($this->detail($id));
     }
 
@@ -53,8 +76,8 @@ class CategoryController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('Редактировать категорию')
+            ->description('Страница для реадактирования категории')
             ->body($this->form()->edit($id));
     }
 
@@ -67,8 +90,8 @@ class CategoryController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Создание категории')
+            ->description('Страница для создания новой категории')
             ->body($this->form());
     }
 
@@ -82,11 +105,19 @@ class CategoryController extends Controller
         $grid = new Grid(new Category);
 
         $grid->id('Id');
-        $grid->name('Name');
-        $grid->parentId('ParentId');
-        $grid->route('Route');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+
+        $grid->name('Имя');
+
+        $grid->filter(function ($filter){
+            $filter->equal('status')->select(Category::$statuses);
+        });
+
+        $grid->status('Статус')->display(function ($status){
+            return Category::$statuses[$status];
+        })->sortable();
+        $grid->slug('Slug');
+        $grid->created_at('Создана');
+        $grid->updated_at('Редактировалась');
 
         return $grid;
     }
@@ -102,11 +133,14 @@ class CategoryController extends Controller
         $show = new Show(Category::findOrFail($id));
 
         $show->id('Id');
-        $show->name('Name');
-        $show->parentId('ParentId');
-        $show->route('Route');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+
+        $show->name('Имя');
+
+        $show->status('Статус');
+
+        $show->slug('Slug');
+        $show->created_at('Создана');
+        $show->updated_at('Редактировалась');
 
         return $show;
     }
@@ -120,9 +154,13 @@ class CategoryController extends Controller
     {
         $form = new Form(new Category);
 
-        $form->text('name', 'Name');
-        $form->number('parentId', 'ParentId');
-        $form->text('route', 'Route')->default('NULL');
+        $form->text('name', 'Имя');
+
+        $form->switch('status', 'Статус')->states([
+            'on'  => ['value' => '1', 'text' => 'Публиковать', 'color' => 'success'],
+            'off' => ['value' => '0', 'text' => 'Не публиковать', 'color' => 'danger'],
+        ]);
+
 
         return $form;
     }

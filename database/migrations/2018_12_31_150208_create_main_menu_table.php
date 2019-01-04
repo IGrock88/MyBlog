@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTestTable extends Migration
+class CreateMainMenuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateTestTable extends Migration
      */
     public function up()
     {
-        Schema::create('test', function (Blueprint $table) {
+        Schema::create('main_menu', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name', 255)->nullable();
+            $table->string('route', 255)->nullable();
+            $table->integer('parentId')->default(0);
+            $table->enum('status', ['0', '1'])->default('0');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ class CreateTestTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test');
+        Schema::dropIfExists('main_menu');
     }
 }

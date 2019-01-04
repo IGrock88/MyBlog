@@ -13,11 +13,11 @@ class Article extends Model
     use Sluggable;
     protected $table = 'article';
 
-    protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author'];
+    protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author', 'slug'];
 
     public function category()
     {
-        return $this->hasOne(Category::class, 'categoryId');
+        return $this->hasOne(Category::class, 'id', 'categoryId');
     }
 
     public function author()

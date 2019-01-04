@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\User;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -27,7 +28,7 @@ class ArticleController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
+            ->header('Список статей')
             ->description('description')
             ->body($this->grid());
     }
@@ -88,7 +89,7 @@ class ArticleController extends Controller
         $grid->id('Id');
         $grid->title('Title');
         $grid->preview('Preview');
-        $grid->text('Text');
+
         $grid->titleImage('TitleImage');
         $grid->author('Author')->display(function ($author){
 
@@ -99,12 +100,11 @@ class ArticleController extends Controller
             return $html;
         });
         $grid->tags('Tags');
-        $grid->route('Route');
         $grid->categoryId()->display(function ($categoryId) {
             if (!$categoryId){
                 return 'Нет категории';
             }
-            $html = "<a href='/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
+            $html = "<a href='/admin/category/$categoryId'>" . Category::find($categoryId)->name . "</a>";
             return $html;
         });
         $grid->created_at('Created at');
@@ -150,17 +150,22 @@ class ArticleController extends Controller
         $form = new Form(new Article());
 
         $form->id('id');
-        $form->text('title', 'Название');
+        $form->text('title', 'Название (также будет добавлено)');
         $form->textarea('preview', 'Превью');
         $form->summernote('text');
         $form->image('titleImage', 'Картинка на превью');
 
-        $form->display('author.name', 'Author');
-        $form->textarea('description')->default('NULL');
-        $form->tags('tags', 'Tags')->default('NULL');
-        $form->tags('keywords', 'Keywords')->default('NULL');
-        $form->text('categoryId', 'Категория');
 
+        $form->textarea('description');
+        $form->tags('tags', 'Tags');
+        $form->tags('keywords', 'Keywords');
+
+
+        $categories = (new CategoryService())->getAllCategoriesNameKeysIndex();
+
+        $form->select('categoryId', 'Категория')->options($categories);
+        $form->display('author.name', 'Author');
+        $form->text('slug', 'Slug')->help('Оставьте поле пустым для автогенерации slug-а');
         return $form;
     }
 }

@@ -16,8 +16,12 @@ Route::group([
 
     $router->resources([
         'article' => ArticleController::class,
-        'category' => CategoryController::class
+        'category' => CategoryController::class,
+        'global-option' => GlobalOptionsController::class,
+        'main-menu' => MainMenuController::class
     ]);
+
+
 
 
 
