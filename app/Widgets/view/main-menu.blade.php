@@ -24,21 +24,21 @@
 </nav> <!-- end header__nav-wrap -->
 
 
-@if ($data)
-    <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
+{{--@if ($data)--}}
+    {{--<a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>--}}
 
-    <nav class="header__nav-wrap">
+    {{--<nav class="header__nav-wrap">--}}
 
-        <h2 class="header__nav-heading h6">Site Navigation</h2>
+        {{--<h2 class="header__nav-heading h6">Site Navigation</h2>--}}
 
-        <ul class="header__nav">
-    @foreach($data as $item)
+        {{--<ul class="header__nav">--}}
+    {{--@foreach($data as $item)--}}
 
 
-    @endforeach
-        </ul> <!-- end header__nav -->
+    {{--@endforeach--}}
+        {{--</ul> <!-- end header__nav -->--}}
 
-        <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>
+        {{--<a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>--}}
 
-    </nav> <!-- end header__nav-wrap -->
-@endif
+    {{--</nav> <!-- end header__nav-wrap -->--}}
+{{--@endif--}}

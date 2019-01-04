@@ -66,6 +66,16 @@
 
 
 /* ===================================================================
+   Animations
+
+ */
+
+@keyframes changeFontSize {
+   0% {font-size: 20px}
+   100% {font-size: 32px}
+}
+
+/* ===================================================================
  * # base style overrides
  *
  * ------------------------------------------------------------------- */
@@ -1461,6 +1471,10 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    transition: all 0.3s ease-in-out;
 }
 
+.article_item__image{
+   width: 100%;
+}
+
 .masonry .entry__thumb-link::before {
    content: "";
    display: block;
@@ -1785,6 +1799,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    border: none;
    -webkit-transition: all 0.3s ease-in-out;
    transition: all 0.3s ease-in-out;
+   animation: changeFontSize 2s 2s forwards;
 }
 
 .header__logo img {
@@ -1998,7 +2013,7 @@ body.search-is-visible {
    text-transform: uppercase;
    letter-spacing: 2px;
    line-height: 21px;
-   content: "Search";
+   content: "Поиск";
    display: block;
    color: #FFFFFF;
    float: left;

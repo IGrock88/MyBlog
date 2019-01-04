@@ -17,9 +17,7 @@ class MainMenuWidget implements IWidget
 
     public function execute(){
 
-        return view('Widgets::main-menu', [
-            'categories' => $categories
-        ]);
+        return view('Widgets::main-menu');
     }
 
 

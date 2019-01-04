@@ -165,6 +165,7 @@ class ArticleController extends Controller
 
         $form->select('categoryId', 'Категория')->options($categories);
         $form->display('author.name', 'Author');
+        $form->text('slug', 'Slug')->help('Оставьте поле пустым для автогенерации slug-а');
         return $form;
     }
 }

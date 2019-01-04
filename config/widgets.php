@@ -5,4 +5,6 @@
  */
 return [
     'mainMenu' => 'App\Widgets\MainMenuWidget',
+    'articles' => 'App\Widgets\ArticlesContainer',
+    'topArticles' => 'App\Widgets\HeaderPopularArticles'
 ];

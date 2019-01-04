@@ -14,7 +14,7 @@ class CategoryService
      */
     public function getAllCategoriesNameKeysIndex()
     {
-        return Category::where('public', '=', '1')->get()->keyBy('id')->map(function ($model){
+        return Category::where('status', '=', '1')->get()->keyBy('id')->map(function ($model){
             return $model->name;
         })->toArray();
     }
