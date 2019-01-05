@@ -5,7 +5,7 @@
     <!--- basic page needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>Philosophy</title>
+    <title>@yield('title', config('app.name'))</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
         <div class="header__content row">
 
             <div class="header__logo">
-                <a class="logo" href="index.html">
+                <a class="logo" href="{{asset('')}}">
                     {{--<img src="{{asset('images/main-logo.png')}}" alt="Technomancy">--}}
                     TECHOMANCY
                 </a>

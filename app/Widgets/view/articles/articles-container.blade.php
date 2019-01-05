@@ -1,7 +1,7 @@
 <!-- s-content
 ================================================== -->
 @if ($articles)
-<section class="s-content">
+
 
     <div class="row masonry-wrap">
         <div class="masonry">
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-</section> <!-- s-content -->
+
 
 @endif
 

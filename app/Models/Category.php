@@ -11,6 +11,7 @@ class Category extends Model
 {
     use Sluggable, ModelTree, AdminBuilder;
 
+    public static $routePrefix = 'category/';
 
     protected $table = 'category';
 
@@ -37,6 +38,11 @@ class Category extends Model
     public function article()
     {
         return $this->belongsTo(Article::class, 'categoryId');
+    }
+
+    public static function bySlug($slug)
+    {
+        return self::where('slug', '=', $slug);
     }
 
 

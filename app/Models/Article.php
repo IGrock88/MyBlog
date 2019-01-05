@@ -25,6 +25,11 @@ class Article extends Model
         return $this->hasOne(Administrator::class, 'id', 'authorId');
     }
 
+    public static function byCategory($categoryId)
+    {
+        return self::where('categoryId', '=', $categoryId);
+    }
+
     protected static function boot()
     {
         parent::boot();

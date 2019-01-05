@@ -156,6 +156,8 @@ class CategoryController extends Controller
 
         $form->text('name', 'Имя');
 
+        $form->textarea('text');
+
         $form->switch('status', 'Статус')->states([
             'on'  => ['value' => '1', 'text' => 'Публиковать', 'color' => 'success'],
             'off' => ['value' => '0', 'text' => 'Не публиковать', 'color' => 'danger'],

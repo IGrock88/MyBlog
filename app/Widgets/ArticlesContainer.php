@@ -9,13 +9,25 @@
 namespace App\Widgets;
 
 
+use App\Models\Article;
+
 class ArticlesContainer implements IWidget
 {
+    const DEFAULT_PER_PAGE_ARTICLES = 12;
     private $articles;
 
-    public function __construct($articles = null)
+    public function __construct($data = [])
     {
-        $this->articles = $articles;
+        if ($data == null){
+            $this->articles = Article::paginate(self::DEFAULT_PER_PAGE_ARTICLES);
+        }
+        else {
+            $category = $data['categoryId'];
+            $this->articles = Article::byCategory($category)->paginate(self::DEFAULT_PER_PAGE_ARTICLES)
+
+            ;
+        }
+
     }
 
     /**
