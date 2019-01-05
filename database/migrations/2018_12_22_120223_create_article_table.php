@@ -15,12 +15,12 @@ class CreateArticleTable extends Migration
     {
         Schema::create('article', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->string('preview');
-            $table->text('text');
+            $table->string('title', 255);
+            $table->string('preview', 255);
+            $table->text('text', 255);
             $table->string('titleImage')->default('NULL')->nullable();
             $table->integer('authorId');
-            $table->string('tags')->default('NULL')->nullable();
+            $table->string('tags', 255)->default('NULL')->nullable();
             $table->integer('categoryId')->default(0)->nullable();
             $table->string('keywords', 255)->nullable();
             $table->string('description', 255)->nullable();
