@@ -7,5 +7,7 @@
 
 
 @section('content')
-    @widget('articles', ['articles' => $articles])
+    <section class="s-content">
+    @widget('articles')
+    </section>
 @stop

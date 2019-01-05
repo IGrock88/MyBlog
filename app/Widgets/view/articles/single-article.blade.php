@@ -24,7 +24,7 @@
         @if ($article->category)
             <div class="entry__meta">
             <span class="entry__meta-links">
-                <a href="{{asset($article->category->slug)}}">{{ $article->category->name }}</a>
+                <a href="{{asset(\App\Models\Category::$routePrefix . $article->category->slug)}}">{{ $article->category->name }}</a>
             </span>
             </div>
         @endif
