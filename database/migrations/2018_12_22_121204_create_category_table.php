@@ -22,7 +22,6 @@ class CreateCategoryTable extends Migration
             $table->enum('public', ['0', '1'])->default('0');
             $table->string('route')->default('NULL')->nullable();
             $table->timestamps();
-            $table->unique(['name']);
         });
     }
 
