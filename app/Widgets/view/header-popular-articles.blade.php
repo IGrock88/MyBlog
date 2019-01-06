@@ -17,7 +17,7 @@
                             <a href="{{ asset(\App\Models\Category::$routePrefix . $mostPopular->category->slug) }}">{{$mostPopular->category->name}}</a>
                         </span>
 
-                            <h1><a href="{{asset($mostPopular->slug)}}" title="">{{$mostPopular->title}}</a></h1>
+                            <h1><a href="{{asset(\App\Models\Article::$routePrefix . $mostPopular->slug)}}" title="">{{$mostPopular->title}}</a></h1>
 
                             <div class="entry__info">
                                 <a href="#0" class="entry__profile-pic">
@@ -45,7 +45,7 @@
                                     <span class="entry__category"><a
                                                 href="{{ asset(\App\Models\Category::$routePrefix . $article->category->slug) }}">{{$article->category->name}}</a></span>
 
-                                    <h1><a href="{{asset($article->slug)}}" title="">{{ $article->title }}</a></h1>
+                                    <h1><a href="{{asset(\App\Models\Article::$routePrefix . $article->slug)}}" title="">{{ $article->title }}</a></h1>
 
                                     <div class="entry__info">
                                         <a href="#0" class="entry__profile-pic">

@@ -14,3 +14,5 @@
 Route::get('/', 'MainController@index');
 
 Route::get('/category/{slug}', 'CategoryController@show');
+
+Route::get('/article/{slug}', 'ArticleController@show');

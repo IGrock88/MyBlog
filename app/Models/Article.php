@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-
     use Sluggable;
+
     protected $table = 'article';
+
+    public static $routePrefix = 'article/';
 
     protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author', 'slug'];
 
