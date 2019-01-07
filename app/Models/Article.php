@@ -27,6 +27,16 @@ class Article extends Model
         return $this->hasOne(Administrator::class, 'id', 'authorId');
     }
 
+    public function prevArticle()
+    {
+        return $this->hasOne(Article::class, 'id', 'prevArticleId');
+    }
+
+    public function nextArticle()
+    {
+        return $this->hasOne(Article::class, 'id', 'nextArticleId');
+    }
+
     public static function byCategory($categoryId)
     {
         return self::where('categoryId', '=', $categoryId);
