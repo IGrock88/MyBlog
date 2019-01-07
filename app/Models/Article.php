@@ -13,6 +13,14 @@ class Article extends Model
 
     protected $table = 'article';
 
+    const PUBLIC = '1';
+    const NOT_PUBLIC = '0';
+
+    public static $statuses = [
+        self::PUBLIC => 'Опубликована',
+        self::NOT_PUBLIC => 'Не опубликована'
+    ];
+
     public static $routePrefix = 'article/';
 
     protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author', 'slug'];
