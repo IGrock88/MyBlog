@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Encore\Admin\Traits\AdminBuilder;
 use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
@@ -35,6 +37,10 @@ class Category extends Model
         $this->setTitleColumn('name');
     }
 
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function article()
     {
         return $this->belongsTo(Article::class, 'categoryId');
@@ -43,6 +49,18 @@ class Category extends Model
     public static function bySlug($slug)
     {
         return self::where('slug', '=', $slug);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public static function isActive()
+    {
+
+        return self::where('status', '=', self::PUBLIC);
+
+
+
     }
 
 

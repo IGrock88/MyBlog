@@ -9,9 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-
     use Sluggable;
+
     protected $table = 'article';
+
+    const PUBLIC = '1';
+    const NOT_PUBLIC = '0';
+
+    public static $statuses = [
+        self::PUBLIC => 'Опубликована',
+        self::NOT_PUBLIC => 'Не опубликована'
+    ];
+
+    public static $routePrefix = 'article/';
 
     protected $fillable = ['title', 'preview', 'text', 'titleImage', 'authorId', 'tags', 'route', 'categoryId', 'author', 'slug'];
 
@@ -23,6 +33,16 @@ class Article extends Model
     public function author()
     {
         return $this->hasOne(Administrator::class, 'id', 'authorId');
+    }
+
+    public function prevArticle()
+    {
+        return $this->hasOne(Article::class, 'id', 'prevArticleId');
+    }
+
+    public function nextArticle()
+    {
+        return $this->hasOne(Article::class, 'id', 'nextArticleId');
     }
 
     public static function byCategory($categoryId)

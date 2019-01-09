@@ -8,17 +8,22 @@
 
 namespace App\Widgets;
 
-
 use App\Models\Category;
-use App\Models\MainMenu;
 
 class MainMenuWidget implements IWidget
 {
 
-    public function execute(){
+    public function execute()
+    {
+        $categories = Category::isActive()->get();
 
-        return view('Widgets::main-menu');
+        return view('Widgets::main-menu', [
+            'categories' => $categories
+        ]);
     }
+
+
+
 
 
 }

@@ -17,9 +17,10 @@ class CreateCategoryTable extends Migration
             $table->increments('id');
             $table->string('name');
 
+            $table->string('text');
             $table->integer('order')->default('0');
             $table->integer('parentId')->default('0');
-            $table->enum('public', ['0', '1'])->default('0');
+            $table->enum('status', ['0', '1'])->default('0');
             $table->string('route')->default('NULL')->nullable();
             $table->timestamps();
         });

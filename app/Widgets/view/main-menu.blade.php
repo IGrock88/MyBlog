@@ -5,16 +5,16 @@
     <h2 class="header__nav-heading h6">Site Navigation</h2>
 
     <ul class="header__nav">
-        <li class="current"><a href="index.html" title="">Home</a></li>
+        <li class="current"><a href="/" title="">Главная</a></li>
         <li class="has-children">
-            <a href="#0" title="">Categories</a>
+            <a href="#" title="">Категории</a>
             <ul class="sub-menu">
-                <li><a href="category.html">Lifestyle</a></li>
-                <li><a href="category.html">Health</a></li>
-                <li><a href="category.html">Family</a></li>
-                <li><a href="category.html">Management</a></li>
-                <li><a href="category.html">Travel</a></li>
-                <li><a href="category.html">Work</a></li>
+                @if ($categories)
+                    @foreach($categories as $category)
+                    <li><a href="{{ asset(\App\Models\Category::$routePrefix . $category->slug) }}">{{ $category->name }}</a></li>
+                    @endforeach
+                @endif
+
             </ul>
         </li>
     </ul> <!-- end header__nav -->

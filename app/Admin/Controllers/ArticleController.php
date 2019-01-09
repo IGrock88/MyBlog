@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\ArticleService;
 use App\Services\CategoryService;
 use App\User;
 use Encore\Admin\Admin;
@@ -60,7 +61,7 @@ class ArticleController extends Controller
         return $content
             ->header('Edit')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form($id)->edit($id));
     }
 
     /**
@@ -145,7 +146,7 @@ class ArticleController extends Controller
      *
      * @return Form
      */
-    protected function form()
+    protected function form($id = null)
     {
         $form = new Form(new Article());
 
@@ -160,12 +161,28 @@ class ArticleController extends Controller
         $form->tags('tags', 'Tags');
         $form->tags('keywords', 'Keywords');
 
+        if ($id = null){
+            $articles = (new ArticleService())->getAllArticleTitleKeysIndex();
+        }
+        else {
+            $articles = (new ArticleService())->getArticleTitlesKeysIndexWithoutId($id);
+        }
+
+        $form->select('prevArticleId', 'Предыдущая статья')->options($articles);
+        $form->select('nextArticleId', 'Следующая статья')->options($articles);
+
 
         $categories = (new CategoryService())->getAllCategoriesNameKeysIndex();
 
         $form->select('categoryId', 'Категория')->options($categories);
         $form->display('author.name', 'Author');
         $form->text('slug', 'Slug')->help('Оставьте поле пустым для автогенерации slug-а');
+
+        $form->switch('status', 'Статус')->states([
+            'on'  => ['value' => '1', 'text' => 'Публиковать', 'color' => 'success'],
+            'off' => ['value' => '0', 'text' => 'Не публиковать', 'color' => 'danger'],
+        ]);
+
         return $form;
     }
 }
