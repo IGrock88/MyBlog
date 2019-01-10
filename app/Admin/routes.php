@@ -18,7 +18,8 @@ Route::group([
         'article' => ArticleController::class,
         'category' => CategoryController::class,
         'global-option' => GlobalOptionsController::class,
-        'main-menu' => MainMenuController::class
+        'main-menu' => MainMenuController::class,
+        'comment' => CommentController::class
     ]);
 
 

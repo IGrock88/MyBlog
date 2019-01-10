@@ -14,4 +14,10 @@ class Comment extends Model
     {
         return $this->hasOne(Article::class, 'id', 'articleId');
     }
+
+
+    public static function byArticle($articleId)
+    {
+        return self::where('articleId', '=', $articleId);
+    }
 }

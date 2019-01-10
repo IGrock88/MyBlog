@@ -23,7 +23,7 @@ class CreateArticleTable extends Migration
             $table->string('tags', 255)->default('NULL')->nullable();
             $table->integer('categoryId')->default(0)->nullable();
             $table->string('keywords', 255)->nullable();
-            $table->string('description', 255)->nullable();
+            $table->text('description', 255)->nullable();
             $table->integer('views')->default(0);
             $table->enum('isShowOnMainHeader', ['0', '1'])->default('0');
             $table->string('slug')->nullable();
