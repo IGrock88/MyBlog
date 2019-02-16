@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/comment/by-article/{articleId}', 'Api\CommentController@byArticle');
+
+Route::resource('comment', 'Api\CommentController');

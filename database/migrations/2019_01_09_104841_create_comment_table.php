@@ -19,7 +19,7 @@ class CreateCommentTable extends Migration
             $table->string('name', '255');
             $table->string('email', '255')->nullable();
             $table->string('website', '255')->nullable();
-            $table->text('message');
+            $table->longText('message');
             $table->integer('parentId')->nullable();
             $table->timestamps();
         });

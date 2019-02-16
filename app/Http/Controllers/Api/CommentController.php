@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Comment;
+use App\Services\CommentService;
 
 
 class CommentController extends Controller
@@ -18,7 +18,8 @@ class CommentController extends Controller
 
     public function byArticle($articleId)
     {
-        $comments = Comment::byArticle($articleId)->get();
+        $comments = (new CommentService())->getCommentTreeByArticle($articleId);
+
         return response()->json([
             'success' => true,
             'comments' => $comments,

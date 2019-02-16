@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Services\ArticleService;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -82,6 +83,14 @@ class CommentController extends Controller
         $grid = new Grid(new Comment);
 
         $grid->id('Id');
+        $grid->article('Статья')->display(function ($article){
+
+            $articleId = $article['id'];
+            $articleTitle = $article['title'];
+
+            $html = "<a href='/admin/article/$articleId'>$articleTitle</a>";
+            return $html;
+        });
         $grid->name('Name');
         $grid->email('Email');
         $grid->website('Website');
@@ -130,6 +139,11 @@ class CommentController extends Controller
         $form->text('website', 'Website');
         $form->textarea('message', 'Message');
         $form->number('parentId', 'ParentId');
+
+
+        $articles = (new ArticleService())->getAllArticleTitleKeysIndex();
+
+        $form->select('articleId', 'Статья')->options($articles);
 
         return $form;
     }
